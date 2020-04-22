@@ -31,10 +31,11 @@ pipeline {
     stage('Docker Push to Staging Repo') {
       steps {
         container('docker'){
-          withCredentials([usernamePassword(credentialsId: 'stagingrepo', usernameVariable: 'stagingrepouser', passwordVariable: 'stagingrepopassword')]) {
-            sh 'docker login -u $stagingrepouser -p $stagingrepopassword partnership-public-images.jfrog.io'
-            sh 'docker push partnership-public-images.jfrog.io/staging/goci-example:latest'
-          }
+            script {
+              docker.withRegistry( 'partnership-public-images.jfrog.io', 'stagingrepo' ) {
+                sh 'docker push partnership-public-images.jfrog.io/staging/goci-example:latest'
+              }
+           }
         }
       }
     }
@@ -50,18 +51,21 @@ pipeline {
       }
     }
     stage('Staging Test') {
-        steps {
-            container('golang'){
+       steps {
+           container('golang'){
               sh 'go test ./... -run Staging'
-          }
-      }
+           }
+       }
     }
     stage('Docker Push to Release Repo') {
       steps {
         container('docker'){
-          withCredentials([usernamePassword(credentialsId: 'releaserepo', usernameVariable: 'releaserepouser', passwordVariable: 'releaserepopassword')]) {
-            sh 'docker login -u $releaserepouser} -p $releaserepopassword partnership-public-images.jfrog.io'
-            sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
+            script {
+              docker.withRegistry( 'partnership-public-images.jfrog.io', 'releaserepo' ) {
+                sh 'docker tag partnership-public-images.jfrog.io/staging/goci-example:latest partnership-public-images.jfrog.io/release/goci-example:latest'
+                sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
+              }
+            }
           }
         }
       }
