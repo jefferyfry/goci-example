@@ -61,12 +61,11 @@ pipeline {
       steps {
         container('docker'){
             script {
-              docker.withRegistry( 'partnership-public-images.jfrog.io', 'releaserepo' ) {
-                sh 'docker tag partnership-public-images.jfrog.io/staging/goci-example:latest partnership-public-images.jfrog.io/release/goci-example:latest'
-                sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
+               docker.withRegistry( 'partnership-public-images.jfrog.io', 'releaserepo' ) {
+                     sh 'docker tag partnership-public-images.jfrog.io/staging/goci-example:latest partnership-public-images.jfrog.io/release/goci-example:latest'
+                     sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
               }
             }
-          }
         }
       }
     }
