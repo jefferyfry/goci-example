@@ -32,7 +32,7 @@ pipeline {
       steps {
         container('docker'){
           withCredentials([usernamePassword(credentialsId: 'stagingrepo', usernameVariable: 'stagingrepouser', passwordVariable: 'stagingrepopassword')]) {
-            sh 'docker login -u $stagingrepouser -p $stagingrepopassword'
+            sh 'docker login -u $stagingrepouser -p $stagingrepopassword partnership-public-images.jfrog.io'
             sh 'docker push partnership-public-images.jfrog.io/staging/goci-example:latest'
           }
         }
@@ -60,7 +60,7 @@ pipeline {
       steps {
         container('docker'){
           withCredentials([usernamePassword(credentialsId: 'releaserepo', usernameVariable: 'releaserepouser', passwordVariable: 'releaserepopassword')]) {
-            sh 'docker login -u $releaserepouser} -p $releaserepopassword'
+            sh 'docker login -u $releaserepouser} -p $releaserepopassword partnership-public-images.jfrog.io'
             sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
           }
         }
