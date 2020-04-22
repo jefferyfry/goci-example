@@ -65,7 +65,7 @@ pipeline {
     stage('Docker Push to Release Repo') {
       steps {
         container('docker'){
-          withCredentials([usernamePassword(credentialsId: 'releaserepo', usernameVariable: 'releaserepouser'), passwordVariable: 'releaserepopassword']) {
+          withCredentials([usernamePassword(credentialsId: 'releaserepo', usernameVariable: 'releaserepouser', passwordVariable: 'releaserepopassword')]) {
             sh "docker login -u ${env.releaserepouser} -p ${env.releaserepopassword}"
             sh 'docker push partnership-jfrog-artifactory.jfrog.io/release/goci-example:latest'
           }
