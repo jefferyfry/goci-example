@@ -10,7 +10,7 @@ spec:
         - cat
       tty: true
     - name: gcloud-kubectl-helm
-      image: kiwigrid/gcloud-kubectl-helm
+      image: ioteam/gcloud-kubectl-helm
       volumeMounts:
       - name: sa-key
         mountPath: "/etc/sa-key.json"
