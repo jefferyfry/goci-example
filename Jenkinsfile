@@ -43,11 +43,15 @@ pipeline {
       steps {
         container('gcloud-kubectl-helm'){
           withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-            sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
+            echo 'Activating service account'
+            sh "gcloud auth activate-service-account --key-file=${env.GC_KEY}"
+            echo 'Setting project'
+            sh 'gcloud config set project soldev-dev'
+            echo 'Getting k8s cluster creds'
+            sh 'gcloud container clusters get-credentials staging --zone us-central1-c --project soldev-dev'
+            echo 'helm install'
+            sh 'helm install goci-example chart/goci-example'
           }
-          sh("gcloud config set project soldev-dev")
-          sh("gcloud container clusters get-credentials staging --zone us-central1-c --project soldev-dev")
-          sh("helm install goci-example ./chart/goci-example")
         }
       }
     }
