@@ -53,8 +53,12 @@ pipeline {
       }
     }
     stage('Staging Test') {
+       environment {
+           STAGING_URL = 'http://10.0.8.235:8091'
+       }
        steps {
            container('golang'){
+              echo 'STAGING_URL = $STAGING_URL'
               sh 'go test ./... -run Staging'
            }
        }
