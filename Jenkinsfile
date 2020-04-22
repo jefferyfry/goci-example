@@ -24,7 +24,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-          sh 'docker build -t partnership-jfrog-artifactory.jfrog.io/staging/goci-example:latest .'
+          sh 'docker build -t partnership-public-images.jfrog.io/staging/goci-example:latest .'
         }
       }
     }
@@ -33,7 +33,7 @@ pipeline {
         container('docker'){
           withCredentials([usernamePassword(credentialsId: 'stagingrepo', usernameVariable: 'stagingrepouser', passwordVariable: 'stagingrepopassword')]) {
             sh 'docker login -u ${env.stagingrepouser} -p ${env.stagingrepopassword}'
-            sh 'docker push partnership-jfrog-artifactory.jfrog.io/staging/goci-example:latest'
+            sh 'docker push partnership-public-images.jfrog.io/staging/goci-example:latest'
           }
         }
       }
@@ -61,7 +61,7 @@ pipeline {
         container('docker'){
           withCredentials([usernamePassword(credentialsId: 'releaserepo', usernameVariable: 'releaserepouser', passwordVariable: 'releaserepopassword')]) {
             sh "docker login -u ${env.releaserepouser} -p ${env.releaserepopassword}"
-            sh 'docker push partnership-jfrog-artifactory.jfrog.io/release/goci-example:latest'
+            sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
           }
         }
       }
