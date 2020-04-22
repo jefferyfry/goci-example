@@ -17,7 +17,7 @@ pipeline {
     stage('Unit Tests') {
         steps {
             container('golang'){
-                sh 'go test -run Unit'
+                sh 'go test ./... -run Unit'
             }
         }
     }
@@ -32,7 +32,7 @@ pipeline {
       steps {
         container('docker'){
           withCredentials([usernamePassword(credentialsId: 'stagingrepo', usernameVariable: 'stagingrepouser', passwordVariable: 'stagingrepopassword')]) {
-            sh "docker login -u ${env.stagingrepouser} -p ${env.stagingrepopassword}"
+            sh 'docker login -u $stagingrepouser -p $stagingrepopassword'
             sh 'docker push partnership-public-images.jfrog.io/staging/goci-example:latest'
           }
         }
@@ -52,7 +52,7 @@ pipeline {
     stage('Staging Test') {
         steps {
             container('golang'){
-              sh 'go test -run Staging'
+              sh 'go test ./... -run Staging'
           }
       }
     }
@@ -60,7 +60,7 @@ pipeline {
       steps {
         container('docker'){
           withCredentials([usernamePassword(credentialsId: 'releaserepo', usernameVariable: 'releaserepouser', passwordVariable: 'releaserepopassword')]) {
-            sh "docker login -u ${env.releaserepouser} -p ${env.releaserepopassword}"
+            sh 'docker login -u $releaserepouser} -p $releaserepopassword'
             sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
           }
         }
