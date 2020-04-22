@@ -48,7 +48,6 @@ pipeline {
             sh 'gcloud config set project soldev-dev'
             sh 'gcloud container clusters get-credentials staging --zone us-central1-c --project soldev-dev'
             sh 'helm install --name goci-example --namespace staging ./chart/goci-example/'
-            sh 'kubectl port-forward $(kubectl get pods --namespace staging -l "app=goci-example,release=goci-example" -o jsonpath="{.items[0].metadata.name}") 8080:8091'
           }
         }
       }
