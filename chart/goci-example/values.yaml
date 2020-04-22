@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: partnership-jfrog-artifactory.jfrog.io/staging/goci-example
+  repository: partnership-public-images.jfrog.io/staging/goci-example
   tag: latest
   pullPolicy: IfNotPresent
 

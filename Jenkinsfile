@@ -45,11 +45,8 @@ pipeline {
           withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
             echo "Activating service account ${env.GC_KEY}"
             sh "gcloud auth activate-service-account --key-file=${env.GC_KEY}"
-            echo 'Setting project'
             sh 'gcloud config set project soldev-dev'
-            echo 'Getting k8s cluster creds'
             sh 'gcloud container clusters get-credentials staging --zone us-central1-c --project soldev-dev'
-            echo 'helm install'
             sh 'helm install --name goci-example --namespace staging ./chart/goci-example/'
           }
         }
@@ -74,5 +71,10 @@ pipeline {
         }
       }
     }
+  }
+  post {
+      success {
+          sh 'helm delete goci-example'
+      }
   }
 }
