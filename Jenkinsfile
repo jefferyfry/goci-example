@@ -54,7 +54,7 @@ pipeline {
     }
     stage('Staging Test') {
        environment {
-           STAGING_URL = 'http://localhost:8080'
+           STAGING_URL = 'http://goci-example.34.68.202.222.xip.io'
        }
        steps {
            container('golang'){
