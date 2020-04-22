@@ -43,7 +43,7 @@ pipeline {
       steps {
         container('gcloud-kubectl-helm'){
           withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-            echo 'Activating service account'
+            echo "Activating service account ${env.GC_KEY}"
             sh "gcloud auth activate-service-account --key-file=${env.GC_KEY}"
             echo 'Setting project'
             sh 'gcloud config set project soldev-dev'
