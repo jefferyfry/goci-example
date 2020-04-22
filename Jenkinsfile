@@ -37,7 +37,7 @@ pipeline {
     stage('Docker Push to Staging Repo') {
       steps {
         container('docker'){
-          withCredentials([usernamePassword(credentialsId: 'stagingrepo', usernameVariable: 'stagingrepouser'), passwordVariable: 'stagingrepopassword']) {
+          withCredentials([usernamePassword(credentialsId: 'stagingrepo', usernameVariable: 'stagingrepouser', passwordVariable: 'stagingrepopassword')]) {
             sh 'docker login -u ${env.stagingrepouser} -p ${env.stagingrepopassword}'
             sh 'docker push partnership-jfrog-artifactory.jfrog.io/staging/goci-example:latest'
           }
