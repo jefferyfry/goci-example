@@ -11,10 +11,6 @@ spec:
       tty: true
     - name: gcloud-kubectl-helm
       image: ioteam/gcloud-kubectl-helm
-      volumeMounts:
-      - name: sa-key
-        mountPath: "/etc/sa-key.json"
-        readOnly: true
       command:
         - cat
       tty: true
@@ -32,6 +28,3 @@ spec:
     - name: docker-sock
       hostPath:
         path: /var/run/docker.sock
-    - name: sa-key
-      secret:
-        secretName: staging-sa-key
