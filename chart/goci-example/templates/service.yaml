@@ -10,9 +10,7 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: 8091
-      protocol: TCP
+    - port: {{ .Values.service.port }}91
       name: http
   selector:
     app: {{ template "goci-example.name" . }}
