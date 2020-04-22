@@ -41,6 +41,10 @@ func getNums(r *http.Request) (int, int, error) {
 	return num1, num2, nil;
 }
 
+func (hdlr *MathHandler) welcome(w http.ResponseWriter, r *http.Request){
+	fmt.Print(w,"Welcome to goci-example!")
+}
+
 func (hdlr *MathHandler) addition(w http.ResponseWriter, r *http.Request){
 	num1,num2,numErr := getNums(r)
 	if numErr == nil {
