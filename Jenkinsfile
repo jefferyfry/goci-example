@@ -54,11 +54,12 @@ pipeline {
     }
     stage('Staging Test') {
        environment {
-           STAGING_URL = 'http://10.0.8.235:8091'
+           STAGING_URL = 'http://localhost:8080'
        }
        steps {
            container('golang'){
-              echo 'STAGING_URL = $STAGING_URL'
+              sh 'kubectl port-forward $(kubectl get pods --namespace staging -l "app=goci-example,release=goci-example" -o jsonpath="{.items[0].metadata.name}") 8080:8091'
+              echo "STAGING_URL = ${env.STAGING_URL}"
               sh 'go test ./... -run Staging'
            }
        }
@@ -78,7 +79,7 @@ pipeline {
   }
   post {
       success {
-          sh 'helm delete goci-example'
+          sh 'helm delete --purge goci-example'
       }
   }
 }
