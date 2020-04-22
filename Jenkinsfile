@@ -8,21 +8,23 @@ pipeline {
   }
   stages {
     stage('Compile') {
-        container('golang'){
-            steps {
+        steps {
+            container('golang'){
                 sh 'go build'
             }
         }
     }
     stage('Code Analysis') {
         steps {
-            sh 'curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b $GOPATH/bin v1.12.5'
-            sh 'golangci-lint run'
+            container('golang'){
+                sh 'curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b $GOPATH/bin v1.12.5'
+                sh 'golangci-lint run'
+            }
         }
     }
     stage('Unit Tests') {
-        container('golang'){
-            steps {
+        steps {
+            container('golang'){
                 sh 'go test -run Unit'
             }
         }
@@ -56,8 +58,8 @@ pipeline {
       }
     }
     stage('Staging Test') {
-      container('golang'){
-          steps {
+        steps {
+            container('golang'){
               sh 'go test -run Staging'
           }
       }
