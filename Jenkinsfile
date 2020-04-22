@@ -50,7 +50,7 @@ pipeline {
             echo 'Getting k8s cluster creds'
             sh 'gcloud container clusters get-credentials staging --zone us-central1-c --project soldev-dev'
             echo 'helm install'
-            sh 'helm install --name goci-example --namespace staging ./chart/goci-example/'
+            sh 'helm install --name goci-example ./chart/goci-example/'
           }
         }
       }
