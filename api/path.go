@@ -11,6 +11,7 @@ func GetApiService() (http.Handler) {
 	apiService := mux.NewRouter();
 	apiService.Methods(http.MethodGet).Path("/status").HandlerFunc(handler.status)
 	apiService.Methods(http.MethodGet).Path("/add").HandlerFunc(handler.addition)
+	apiService.Methods(http.MethodGet).Path("/addTest").HandlerFunc(handler.addition)
 	apiService.Methods(http.MethodGet).Path("/subtract").HandlerFunc(handler.subtraction)
 	apiService.Methods(http.MethodGet).Path("/multiply").HandlerFunc(handler.multiplication)
 	apiService.Methods(http.MethodGet).Path("/divide").HandlerFunc(handler.division)
