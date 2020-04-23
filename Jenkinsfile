@@ -59,12 +59,7 @@ pipeline {
        steps {
           timeout(time: 60, unit: 'SECONDS') {
               waitUntil {
-                  try {
-                      sh "curl -s --head  --request GET  ${env.STAGING_URL} | grep '200'"
-                      return true
-                  } catch (Exception e) {
-                      return false
-                  }
+                sh "curl -s --head  --request GET  ${env.STAGING_URL} | grep '200'"
               }
           }
        }
