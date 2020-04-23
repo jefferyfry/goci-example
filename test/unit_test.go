@@ -16,6 +16,12 @@ func TestUnit(t *testing.T) {
 
 	e := httpexpect.New(t, server.URL)
 
+	e.GET("/").WithQuery("num1","1").WithQuery("num2","5").
+		Expect().Body().Contains("ready")
+
+	e.GET("/status").WithQuery("num1","1").WithQuery("num2","5").
+		Expect().Body().Contains("ready")
+
 	e.GET("/add").WithQuery("num1","1").WithQuery("num2","5").
 		Expect().Body().Equal("6")
 
