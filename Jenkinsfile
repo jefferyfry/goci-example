@@ -70,7 +70,7 @@ pipeline {
                         }
                       }
                   }
-              } catch(Exception e){//continue of abort}
+              } catch(Exception e){}
            }
        }
     }
