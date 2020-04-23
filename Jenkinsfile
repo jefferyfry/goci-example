@@ -50,7 +50,7 @@ pipeline {
             sh "gcloud auth activate-service-account --key-file=${env.GC_KEY}"
             sh 'gcloud config set project soldev-dev'
             sh 'gcloud container clusters get-credentials staging --zone us-central1-c --project soldev-dev'
-            sh "helm install --set image.tag ${env.BUILD_NUMBER} --name goci-example --namespace staging ./chart/goci-example/"
+            sh "helm install --set image.tag=${env.BUILD_NUMBER} --name goci-example --namespace staging ./chart/goci-example/"
           }
         }
       }
