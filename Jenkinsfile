@@ -57,18 +57,21 @@ pipeline {
     }
     stage('Wait for Server') {
        steps {
-          timeout(time: 1, unit: 'MINUTES') {
-              waitUntil {
-                script {
-                    try {
-                        def r = sh script: "curl -s --head  --request GET  ${env.STAGING_URL}/status | grep '200'", returnStdout: true
-                        return (r == 'HTTP/1.1 200 OK');
-                    } catch(Exception e){
-                        return false;
-                    }
-                }
-              }
-          }
+           script {
+              try {
+                  timeout(time: 2, unit: 'MINUTES') {
+                      waitUntil {
+                            try {
+                                def r = sh script: "curl -s --head  --request GET  ${env.STAGING_URL}/status | grep '200'", returnStdout: true
+                                return (r == 'HTTP/1.1 200 OK');
+                            } catch(Exception e){
+                                return false;
+                            }
+                        }
+                      }
+                  }
+              } catch(Exception e){//continue of abort}
+           }
        }
     }
     stage('Staging Test') {
