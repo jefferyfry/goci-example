@@ -6,10 +6,10 @@ pipeline {
         idleMinutes 120
     }
   }
+  environment {
+     STAGING_URL = 'http://goci-example.35.193.183.84.xip.io'
+  }
   stages {
-    environment {
-       STAGING_URL = 'http://goci-example.35.193.183.84.xip.io'
-    }
     stage('Compile') {
         steps {
             container('golang'){
