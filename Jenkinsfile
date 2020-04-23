@@ -60,7 +60,7 @@ pipeline {
           timeout(time: 60, unit: 'SECONDS') {
               waitUntil {
                 script {
-                    def r = sh script: "wget -q ${env.STAGING_URL} -O /dev/null", returnStdout: true
+                    def r = sh script: "wget -q ${env.STAGING_URL}/healthz -O /dev/null", returnStdout: true
                     return (r == 0);
                 }
               }
