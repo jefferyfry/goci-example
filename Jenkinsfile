@@ -67,7 +67,6 @@ pipeline {
                             } catch(Exception e){
                                 return false;
                             }
-                        }
                       }
                   }
               } catch(Exception e){}
