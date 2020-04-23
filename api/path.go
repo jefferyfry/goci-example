@@ -9,7 +9,7 @@ func GetApiService() (http.Handler) {
 	handler := GetMathHandler()
 
 	apiService := mux.NewRouter();
-	apiService.Methods(http.MethodGet).Path("/healthz").HandlerFunc(handler.welcome)
+	apiService.Methods(http.MethodGet).Path("/status").HandlerFunc(handler.status)
 	apiService.Methods(http.MethodGet).Path("/add").HandlerFunc(handler.addition)
 	apiService.Methods(http.MethodGet).Path("/subtract").HandlerFunc(handler.subtraction)
 	apiService.Methods(http.MethodGet).Path("/multiply").HandlerFunc(handler.multiplication)

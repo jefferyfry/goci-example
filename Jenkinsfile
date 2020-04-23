@@ -60,7 +60,7 @@ pipeline {
           timeout(time: 60, unit: 'SECONDS') {
               waitUntil {
                 script {
-                    def r = sh script: "curl -s --head  --request GET  ${env.STAGING_URL}/healthz | grep '200'", returnStdout: true
+                    def r = sh script: "curl -s --head  --request GET  ${env.STAGING_URL}/status | grep '200'", returnStdout: true
                     return (r == 'HTTP/1.1 200 OK');
                 }
               }
