@@ -59,7 +59,10 @@ pipeline {
        steps {
           timeout(time: 60, unit: 'SECONDS') {
               waitUntil {
-                sh "curl -s --head  --request GET  ${env.STAGING_URL} | grep '200'"
+                script {
+                    def r = sh script: "wget -q ${env.STAGING_URL} -O /dev/null", returnStdout: true
+                    return (r == 0);
+                }
               }
           }
        }
