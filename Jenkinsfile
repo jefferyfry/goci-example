@@ -27,7 +27,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-          sh 'docker build -t partnership-public-images.jfrog.io/staging/goci-example:latest .'
+          sh "docker build -t partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER} ."
         }
       }
     }
@@ -36,7 +36,7 @@ pipeline {
         container('docker'){
             script {
               docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
-                sh 'docker push partnership-public-images.jfrog.io/staging/goci-example:latest'
+                sh "docker push partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER}"
               }
            }
         }
@@ -50,7 +50,7 @@ pipeline {
             sh "gcloud auth activate-service-account --key-file=${env.GC_KEY}"
             sh 'gcloud config set project soldev-dev'
             sh 'gcloud container clusters get-credentials staging --zone us-central1-c --project soldev-dev'
-            sh 'helm install --name goci-example --namespace staging ./chart/goci-example/'
+            sh "helm install --set image.tag ${env.BUILD_NUMBER} --name goci-example --namespace staging ./chart/goci-example/"
           }
         }
       }
@@ -60,8 +60,12 @@ pipeline {
           timeout(time: 1, unit: 'MINUTES') {
               waitUntil {
                 script {
-                    def r = sh script: "curl -s --head  --request GET  ${env.STAGING_URL}/status | grep '200'", returnStdout: true
-                    return (r == 'HTTP/1.1 200 OK');
+                    try {
+                        def r = sh script: "curl -s --head  --request GET  ${env.STAGING_URL}/status | grep '200'", returnStdout: true
+                        return (r == 'HTTP/1.1 200 OK');
+                    } catch(Exception e){
+                        return false;
+                    }
                 }
               }
           }
@@ -80,8 +84,8 @@ pipeline {
         container('docker'){
             script {
                docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'releaserepo' ) {
-                     sh 'docker tag partnership-public-images.jfrog.io/staging/goci-example:latest partnership-public-images.jfrog.io/release/goci-example:latest'
-                     sh 'docker push partnership-public-images.jfrog.io/release/goci-example:latest'
+                     sh "docker tag partnership-public-images.jfrog.io/staging/goci-example::${env.BUILD_NUMBER} partnership-public-images.jfrog.io/release/goci-example::${env.BUILD_NUMBER}"
+                     sh "docker push partnership-public-images.jfrog.io/release/goci-example::${env.BUILD_NUMBER}"
               }
             }
         }
