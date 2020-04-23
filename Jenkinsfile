@@ -57,7 +57,7 @@ pipeline {
     }
     stage('Wait for Server') {
        steps {
-          timeout(time: 60, unit: 'SECONDS') {
+          timeout(time: 1, unit: 'MINUTES') {
               waitUntil {
                 script {
                     def r = sh script: "curl -s --head  --request GET  ${env.STAGING_URL}/status | grep '200'", returnStdout: true

@@ -16,7 +16,7 @@ func GetApiService() (http.Handler) {
 	apiService.Methods(http.MethodGet).Path("/divide").HandlerFunc(handler.division)
 
 	apiService.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/healthz", http.StatusFound)
+		http.Redirect(w, r, "/status", http.StatusFound)
 	})
 
 	return apiService;
