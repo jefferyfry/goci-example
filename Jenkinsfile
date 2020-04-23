@@ -96,7 +96,9 @@ pipeline {
   }
   post {
       success {
+        container('gcloud-kubectl-helm'){
           sh 'helm delete --purge goci-example'
+        }
       }
   }
 }
