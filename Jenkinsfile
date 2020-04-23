@@ -86,8 +86,8 @@ pipeline {
         container('docker'){
             script {
                docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'releaserepo' ) {
-                     sh "docker tag partnership-public-images.jfrog.io/staging/goci-example::${env.BUILD_NUMBER} partnership-public-images.jfrog.io/release/goci-example::${env.BUILD_NUMBER}"
-                     sh "docker push partnership-public-images.jfrog.io/release/goci-example::${env.BUILD_NUMBER}"
+                     sh "docker tag partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER} partnership-public-images.jfrog.io/release/goci-example:${env.BUILD_NUMBER}"
+                     sh "docker push partnership-public-images.jfrog.io/release/goci-example:${env.BUILD_NUMBER}"
               }
             }
         }
