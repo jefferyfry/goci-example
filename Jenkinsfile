@@ -7,6 +7,9 @@ pipeline {
     }
   }
   stages {
+    environment {
+       STAGING_URL = 'http://goci-example.35.193.183.84.xip.io'
+    }
     stage('Compile') {
         steps {
             container('golang'){
@@ -52,10 +55,21 @@ pipeline {
         }
       }
     }
-    stage('Staging Test') {
-       environment {
-           STAGING_URL = 'http://goci-example.35.193.183.84.xip.io'
+    stage('Wait for Server') {
+       steps {
+          timeout(time: 60, unit: 'SECONDS') {
+              waitUntil {
+                  try {
+                      sh "curl -s --head  --request GET  ${env.STAGING_URL} | grep '200'"
+                      return true
+                  } catch (Exception e) {
+                      return false
+                  }
+              }
+          }
        }
+    }
+    stage('Staging Test') {
        steps {
            container('golang'){
               echo "Running staging tests against ${env.STAGING_URL}"

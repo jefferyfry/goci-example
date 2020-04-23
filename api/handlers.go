@@ -42,7 +42,7 @@ func getNums(r *http.Request) (int, int, error) {
 }
 
 func (hdlr *MathHandler) welcome(w http.ResponseWriter, r *http.Request){
-	fmt.Print(w,"Welcome to goci-example!")
+	fmt.Fprint(w,"<html><h1>Welcome to goci-example!<h1><html>")
 }
 
 func (hdlr *MathHandler) addition(w http.ResponseWriter, r *http.Request){
