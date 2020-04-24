@@ -27,6 +27,8 @@ pipelines:
             image:
               auto:
                 language: go
+                versions:
+                  - "1.14.2"
         execution:
           onExecute:
             - sh 'go build'
@@ -38,6 +40,8 @@ pipelines:
             image:
               auto:
                 language: go
+                versions:
+                  - "1.14.2"
         execution:
           onExecute:
             - sh 'go test ./... -run Unit'
@@ -61,7 +65,7 @@ pipelines:
           integrations:
             - name: PartnershipArtifactory
           inputSteps:
-            - name: Docker Build
+            - name: docker_build
       - name: Publish Build Info
         type: PublishBuildInfo
         configuration:
@@ -73,6 +77,7 @@ pipelines:
         type: HelmDeploy
         configuration:
           flags: --set image.tag="${run_number}"
+          releaseName: goci-example
           integrations:
             - name: stagingGKE
           inputResources:
@@ -85,6 +90,8 @@ pipelines:
             image:
               auto:
                 language: go
+                versions:
+                  - "1.14.2"
         execution:
           onExecute:
             - sh 'timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false'
@@ -103,5 +110,7 @@ pipelines:
         type: PromoteBuild
         configuration:
           targetRepository: partnership-public-images.jfrog.io
-          inputResources: staging_build
-          outputResources: release_build
+          inputResources:
+            - staging_build
+          outputResources:
+            - release_build
