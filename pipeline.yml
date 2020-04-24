@@ -1,0 +1,108 @@
+resources:
+  - name: goci-exampleGithubRepo
+    type: GitRepo
+    configuration:
+      gitProvider: jefferyfryGithub
+      path: jefferyfry/goci-example
+  - name: staging_build
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: PartnershipArtifactory
+      buildName: staging_build
+      buildNumber: 1
+  - name: release_build
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: PartnershipArtifactory
+      buildName: release_build
+      buildNumber: 1
+pipelines:
+  - name: goci_example_jfrog
+  steps:
+  - name: compile
+    type: Bash
+    configuration:
+      runtime:
+        type: image
+        image:
+          auto:
+            language: go
+    execution:
+      onExecute:
+        - sh 'go build'
+  - name: unit_tests
+    type: Bash
+      configuration:
+        runtime:
+          type: image
+          image:
+            auto:
+              language: go
+      execution:
+        onExecute:
+          - sh 'go test ./... -run Unit'
+  - name: docker_build
+    type: DockerBuild
+    configuration:
+      affinityGroup: dockerGroup
+      dockerFileLocation: .
+      dockerFileName: Dockerfile
+      dockerImageName: 'partnership-public-images.jfrog.io/jenkins/staging/goci-example:'
+      dockerImageTag: ${run_number}
+      inputResources:
+        - name: goci-exampleGithubRepo
+      integrations:
+        - name: PartnershipArtifactory
+  - name: docker_push_staging
+    type: DockerPush
+    configuration:
+      affinityGroup: dockerGroup
+      targetRepository: partnership-public-images.jfrog.io
+      integrations:
+        - name: PartnershipArtifactory
+      inputSteps:
+        - name: Docker Build
+  - name: Publish Build Info
+    type: PublishBuildInfo
+    configuration:
+      inputSteps:
+        - name: Docker Push to Staging Repo
+      outputResources:
+        - name: PartnerhsipArtifactory
+
+  - name: deploy_staging
+    type: HelmDeploy
+    configuration:
+      flags: --set image.tag="${run_number}"
+      - integrations:
+          - name: stagingGKE
+      - inputResources:
+          - name: goci-exampleGithubRepo
+  - name: wait_for_server
+      type: Bash
+        configuration:
+          runtime:
+            type: image
+            image:
+              auto:
+                language: go
+        execution:
+          onExecute:
+            - sh 'timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false'
+  - name: staging_test
+    type: Bash
+      configuration:
+        runtime:
+          type: image
+          image:
+            auto:
+              language: go
+      execution:
+        onExecute:
+          - sh 'go test ./... -run Staging'
+  - name: promote_release
+    type: PromoteBuild
+      configuration:
+        targetRepository: partnership-public-images.jfrog.io
+        inputResources: staging_build
+        outputResources: release_build

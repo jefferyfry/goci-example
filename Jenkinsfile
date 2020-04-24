@@ -27,7 +27,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-          sh "docker build -t partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER} ."
+          sh "docker build -t partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER} ."
         }
       }
     }
@@ -36,7 +36,7 @@ pipeline {
         container('docker'){
             script {
               docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
-                sh "docker push partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER}"
+                sh "docker push partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER}"
               }
            }
         }
@@ -81,13 +81,13 @@ pipeline {
            }
        }
     }
-    stage('Docker Push to Release Repo') {
+    stage('Promote to Release') {
       steps {
         container('docker'){
             script {
                docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'releaserepo' ) {
-                     sh "docker tag partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER} partnership-public-images.jfrog.io/release/goci-example:${env.BUILD_NUMBER}"
-                     sh "docker push partnership-public-images.jfrog.io/release/goci-example:${env.BUILD_NUMBER}"
+                     sh "docker tag partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER} partnership-public-images.jfrog.io/jenkins/release/goci-example:${env.BUILD_NUMBER}"
+                     sh "docker push partnership-public-images.jfrog.io/jenkins/release/goci-example:${env.BUILD_NUMBER}"
               }
             }
         }
