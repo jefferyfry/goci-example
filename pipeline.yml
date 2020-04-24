@@ -73,10 +73,10 @@ pipelines:
         type: HelmDeploy
         configuration:
           flags: --set image.tag="${run_number}"
-          - integrations:
-              - name: stagingGKE
-          - inputResources:
-              - name: goci-exampleGithubRepo
+          integrations:
+            - name: stagingGKE
+          inputResources:
+            - name: goci-exampleGithubRepo
       - name: wait_for_server
         type: Bash
         configuration:
