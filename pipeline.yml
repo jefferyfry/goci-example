@@ -35,6 +35,8 @@ pipelines:
       - name: unit_tests
         type: Bash
         configuration:
+          inputSteps:
+            - name: compile
           runtime:
             type: image
             image:
@@ -86,6 +88,8 @@ pipelines:
       - name: wait_for_server
         type: Bash
         configuration:
+          inputSteps:
+            - name: deploy_staging
           runtime:
             type: image
             image:
@@ -99,6 +103,8 @@ pipelines:
       - name: staging_test
         type: Bash
         configuration:
+          inputSteps:
+            - name: wait_for_server
           runtime:
             type: image
             image:
