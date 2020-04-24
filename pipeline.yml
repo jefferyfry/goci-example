@@ -66,7 +66,7 @@ pipelines:
             - name: PartnershipArtifactory
           inputSteps:
             - name: docker_build
-      - name: Publish Build Info
+      - name: publish_build_info
         type: PublishBuildInfo
         configuration:
           inputSteps:
@@ -78,6 +78,7 @@ pipelines:
         configuration:
           flags: --set image.tag="${run_number}"
           releaseName: goci-example
+          chartPath: chart/goci-example
           integrations:
             - name: stagingGKE
           inputResources:
@@ -103,14 +104,16 @@ pipelines:
             image:
               auto:
                 language: go
+                versions:
+                  - "1.14.2"
         execution:
           onExecute:
             - sh 'go test ./... -run Staging'
-      - name: promote_release
-        type: PromoteBuild
-        configuration:
-          targetRepository: partnership-public-images.jfrog.io
-          inputResources:
-            - staging_build
-          outputResources:
-            - release_build
+#      - name: promote_release
+#        type: PromoteBuild
+#        configuration:
+#          targetRepository: partnership-public-images.jfrog.io
+#          inputResources:
+#            - staging_build
+#          outputResources:
+#            - release_build
