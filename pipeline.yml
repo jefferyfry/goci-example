@@ -32,15 +32,15 @@ pipelines:
             - sh 'go build'
       - name: unit_tests
         type: Bash
-          configuration:
-            runtime:
-              type: image
-              image:
-                auto:
-                  language: go
-          execution:
-            onExecute:
-              - sh 'go test ./... -run Unit'
+        configuration:
+          runtime:
+            type: image
+            image:
+              auto:
+                language: go
+        execution:
+          onExecute:
+            - sh 'go test ./... -run Unit'
       - name: docker_build
         type: DockerBuild
         configuration:
@@ -78,30 +78,30 @@ pipelines:
           - inputResources:
               - name: goci-exampleGithubRepo
       - name: wait_for_server
-          type: Bash
-            configuration:
-              runtime:
-                type: image
-                image:
-                  auto:
-                    language: go
-            execution:
-              onExecute:
-                - sh 'timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false'
+        type: Bash
+        configuration:
+          runtime:
+            type: image
+            image:
+              auto:
+                language: go
+        execution:
+          onExecute:
+            - sh 'timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false'
       - name: staging_test
         type: Bash
-          configuration:
-            runtime:
-              type: image
-              image:
-                auto:
-                  language: go
-          execution:
-            onExecute:
-              - sh 'go test ./... -run Staging'
+        configuration:
+          runtime:
+            type: image
+            image:
+              auto:
+                language: go
+        execution:
+          onExecute:
+            - sh 'go test ./... -run Staging'
       - name: promote_release
         type: PromoteBuild
-          configuration:
-            targetRepository: partnership-public-images.jfrog.io
-            inputResources: staging_build
-            outputResources: release_build
+        configuration:
+          targetRepository: partnership-public-images.jfrog.io
+          inputResources: staging_build
+          outputResources: release_build
