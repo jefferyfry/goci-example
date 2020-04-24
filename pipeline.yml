@@ -50,6 +50,8 @@ pipelines:
       - name: docker_build
         type: DockerBuild
         configuration:
+          inputSteps:
+            - name: unit_tests
           affinityGroup: dockerGroup
           dockerFileLocation: .
           dockerFileName: Dockerfile
@@ -62,12 +64,12 @@ pipelines:
       - name: docker_push_staging
         type: DockerPush
         configuration:
+          inputSteps:
+            - name: docker_build
           affinityGroup: dockerGroup
           targetRepository: partnership-public-images.jfrog.io
           integrations:
             - name: PartnershipArtifactory
-          inputSteps:
-            - name: docker_build
       - name: publish_build_info
         type: PublishBuildInfo
         configuration:
@@ -78,6 +80,8 @@ pipelines:
       - name: deploy_staging
         type: HelmDeploy
         configuration:
+          inputSteps:
+            - name: publish_build_info
           flags: --set image.tag="${run_number}"
           releaseName: goci-example
           chartPath: chart/goci-example
