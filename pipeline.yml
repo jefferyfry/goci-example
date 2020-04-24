@@ -70,9 +70,9 @@ pipelines:
         type: PublishBuildInfo
         configuration:
           inputSteps:
-            - name: Docker Push to Staging Repo
+            - name: docker_push_staging
           outputResources:
-            - name: PartnerhsipArtifactory
+            - name: PartnershipArtifactory
       - name: deploy_staging
         type: HelmDeploy
         configuration:
