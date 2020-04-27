@@ -85,7 +85,7 @@ pipelines:
           inputSteps:
             - name: publish_staging_build
           targetRepository: partnership-public-images.jfrog.io
-          inputResources:
-            - stagingBuildInfo
+          integrations:
+          status: "release"
           outputResources:
             - releaseBuildInfo
