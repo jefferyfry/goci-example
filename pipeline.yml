@@ -74,12 +74,12 @@ pipelines:
           onExecute:
             - sh 'go test ./... -run Staging'
       - name: publish_staging_build
-          type: PublishBuildInfo
-          configuration:
-            inputSteps:
-              - name: staging_test
-            outputResources:
-              - name: stagingBuildInfo
+        type: PublishBuildInfo
+        configuration:
+          inputSteps:
+            - name: staging_test
+          outputResources:
+            - name: stagingBuildInfo
       - name: promote_release
         type: PromoteBuild
         configuration:
