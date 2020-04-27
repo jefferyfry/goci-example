@@ -1,0 +1,90 @@
+resources:
+  - name: gociexampleGithubRepo
+    type: GitRepo
+    configuration:
+      gitProvider: jefferyfryGithub
+      path: jefferyfry/goci-example
+  - name: stagingBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: PartnershipArtifactory
+      buildName: gociexample_build
+      buildNumber: 1
+      externalCI: jenkins_openshiftk8s_com
+  - name: releaseBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: PartnershipArtifactory
+      buildName: gociexample_build
+      buildNumber: 1
+pipelines:
+  - name: goci_example_jfrog
+    steps:
+      - name: xray_scan_staging_build
+        type: XrayScan
+        configuration:
+          failOnScan: true
+          inputResources:
+            - name: stagingBuildInfo
+              trigger: true
+          outputResources:
+            - name: stagingBuildInfo
+      - name: deploy_staging
+        type: HelmDeploy
+        configuration:
+          inputSteps:
+            - name: xray_scan_staging_build
+          flags: --set image.tag="${run_number}"
+          releaseName: goci-example
+          chartPath: chart/goci-example
+          integrations:
+            - name: stagingGKE
+          inputResources:
+            - name: gociexampleGithubRepo
+          outputResources:
+            - name: stagingBuildInfo
+      - name: wait_for_server
+        type: Bash
+        configuration:
+          inputSteps:
+            - name: deploy_staging
+          runtime:
+            type: image
+            image:
+              auto:
+                language: go
+                versions:
+                  - "1.14.2"
+        execution:
+          onExecute:
+            - sh 'timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false'
+      - name: staging_test
+        type: Bash
+        configuration:
+          inputSteps:
+            - name: wait_for_server
+          runtime:
+            type: image
+            image:
+              auto:
+                language: go
+                versions:
+                  - "1.14.2"
+        execution:
+          onExecute:
+            - sh 'go test ./... -run Staging'
+      - name: publish_staging_build
+          type: PublishBuildInfo
+          configuration:
+            inputSteps:
+              - name: staging_test
+            outputResources:
+              - name: stagingBuildInfo
+      - name: promote_release
+        type: PromoteBuild
+        configuration:
+          targetRepository: partnership-public-images.jfrog.io
+          inputResources:
+            - stagingBuildInfo
+          outputResources:
+            - releaseBuildInfo
