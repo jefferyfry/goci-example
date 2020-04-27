@@ -45,7 +45,7 @@ pipeline {
   }
   post {
       success {
-        curl -XPOST -H "authorization: Basic amVmZmY6amZyMGdqM25rMW5z" https://partnership-pipelines-api.jfrog.io/v1/projectIntegrations/17/hook
+        sh 'curl -XPOST -H "authorization: Basic amVmZmY6amZyMGdqM25rMW5z" https://partnership-pipelines-api.jfrog.io/v1/projectIntegrations/17/hook'
       }
   }
 }
