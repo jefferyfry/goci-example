@@ -62,6 +62,8 @@ pipelines:
         configuration:
           inputSteps:
             - name: wait_for_server
+          outputResources:
+            - name: stagingBuildInfo
           runtime:
             type: image
             image:
@@ -85,10 +87,9 @@ pipelines:
           inputSteps:
             - name: publish_staging_build
           targetRepository: partnership-public-images.jfrog.io
-          integrations:
-            - PartnershipArtifactory
-          status: "release"
+          status: Released
+          comment: Passed staging tests.
           inputResources:
-            - stagingBuildInfo
+            - name: stagingBuildInfo
           outputResources:
-            - releaseBuildInfo
+            - name: releaseBuildInfo
