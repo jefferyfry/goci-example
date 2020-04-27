@@ -10,7 +10,7 @@ pipeline {
      STAGING_URL = 'http://goci-example.35.193.183.84.xip.io'
   }
   stages {
-    stage('Compile') {
+    stage('Build') {
         steps {
             container('golang'){
                 sh 'go build'
