@@ -45,7 +45,9 @@ pipeline {
   }
   post {
       success {
-        sh 'curl -XPOST -H "authorization: Basic amVmZmY6amZyMGdqM25rMW5z" https://partnership-pipelines-api.jfrog.io/v1/projectIntegrations/17/hook'
+        script {
+           sh "curl -XPOST -H \"Authorization: Basic amVmZmY6amZyMGdqM25rMW5z=\" \"https://partnership-pipelines-api.jfrog.io/v1/projectIntegrations/17/hook\" -d '{\"buildName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"buildInfoResourceName\":\"stagingBuildInfo\"}' -H \"Content-Type: application/json\""
+        }
       }
   }
 }
