@@ -26,8 +26,6 @@ pipelines:
           inputResources:
             - name: stagingBuildInfo
               trigger: true
-          outputResources:
-            - name: stagingBuildInfo
       - name: deploy_staging
         type: HelmDeploy
         configuration:
@@ -38,8 +36,6 @@ pipelines:
             - name: stagingGKE
           inputResources:
             - name: gociexampleGithubRepo
-          outputResources:
-            - name: stagingBuildInfo
       - name: wait_for_server
         type: Bash
         configuration:
@@ -60,8 +56,6 @@ pipelines:
         configuration:
           inputSteps:
             - name: wait_for_server
-          outputResources:
-            - name: stagingBuildInfo
           runtime:
             type: image
             image:
