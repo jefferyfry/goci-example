@@ -23,7 +23,6 @@ pipelines:
       - name: xray_scan_staging_build
         type: XrayScan
         configuration:
-          failOnScan: true
           inputResources:
             - name: stagingBuildInfo
               trigger: true
@@ -83,6 +82,8 @@ pipelines:
       - name: promote_release
         type: PromoteBuild
         configuration:
+          inputSteps:
+            - name: publish_staging_build
           targetRepository: partnership-public-images.jfrog.io
           inputResources:
             - stagingBuildInfo
