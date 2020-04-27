@@ -86,6 +86,9 @@ pipelines:
             - name: publish_staging_build
           targetRepository: partnership-public-images.jfrog.io
           integrations:
+            - PartnershipArtifactory
           status: "release"
+          inputResources:
+            - stagingBuildInfo
           outputResources:
             - releaseBuildInfo
