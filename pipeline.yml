@@ -31,8 +31,6 @@ pipelines:
       - name: deploy_staging
         type: HelmDeploy
         configuration:
-          inputSteps:
-            - name: xray_scan_staging_build
           flags: --set image.tag="${run_number}"
           releaseName: goci-example
           chartPath: chart/goci-example
@@ -84,8 +82,6 @@ pipelines:
       - name: promote_release
         type: PromoteBuild
         configuration:
-          inputSteps:
-            - name: publish_staging_build
           targetRepository: partnership-public-images.jfrog.io
           status: Released
           comment: Passed staging tests.
