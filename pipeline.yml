@@ -37,8 +37,6 @@ pipelines:
       - name: deploy_staging
         type: HelmDeploy
         configuration:
-          inputSteps:
-            - name: start_from_jenkins
           flags: --set image.tag="${run_number}"
           releaseName: goci-example
           chartPath: chart/goci-example
