@@ -42,7 +42,7 @@ pipeline {
            rtDockerPush(
                serverId: "PartnershipArtifactory",
                image: "partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER}",
-               targetRepo: 'docker-local',
+               targetRepo: 'public-images',
                properties: 'project-name=goci-example;status=staging'
            )
            rtPublishBuildInfo (
