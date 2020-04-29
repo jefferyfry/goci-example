@@ -20,12 +20,12 @@ resources:
 pipelines:
   - name: goci_example_jfrog
     steps:
-      - name: xray_scan_staging_build
-        type: XrayScan
-        configuration:
-          inputResources:
-            - name: stagingBuildInfo
-              trigger: true
+#      - name: xray_scan_staging_build
+#        type: XrayScan
+#        configuration:
+#          inputResources:
+#            - name: stagingBuildInfo
+#              trigger: true
       - name: deploy_staging
         type: HelmDeploy
         configuration:
@@ -35,6 +35,7 @@ pipelines:
           integrations:
             - name: stagingGKE
           inputResources:
+            - name: stagingBuildInfo
             - name: gociexampleGithubRepo
       - name: wait_for_server
         type: Bash
