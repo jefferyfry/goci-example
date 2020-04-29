@@ -4,13 +4,19 @@ resources:
     configuration:
       gitProvider: jefferyfryGithub
       path: jefferyfry/goci-example
-  - name: stagingBuildInfo
+  - name: jenkinsBuildInfo
     type: BuildInfo
     configuration:
       sourceArtifactory: PartnershipArtifactory
       buildName: gociexample_build
       buildNumber: 1
       externalCI: jenkins_openshiftk8s_com
+  - name: stagingBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: PartnershipArtifactory
+      buildName: gociexample_build
+      buildNumber: 1
   - name: releaseBuildInfo
     type: BuildInfo
     configuration:
@@ -30,7 +36,7 @@ pipelines:
         type: Bash
         configuration:
           inputResources:
-            - name: stagingBuildInfo
+            - name: jenkinsBuildInfo
         execution:
           onExecute:
             - echo 'Jenkins job triggered Pipelines'
