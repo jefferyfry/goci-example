@@ -27,13 +27,13 @@ pipelines:
 #            - name: stagingBuildInfo
 #              trigger: true
       - name: start_from_jenkins
-          type: Bash
-          configuration:
-            inputResources:
-              - name: stagingBuildInfo
-          execution:
-            onExecute:
-              - echo 'Jenkins job triggered Pipelines'
+        type: Bash
+        configuration:
+          inputResources:
+            - name: stagingBuildInfo
+        execution:
+          onExecute:
+            - echo 'Jenkins job triggered Pipelines'
       - name: deploy_staging
         type: HelmDeploy
         configuration:
