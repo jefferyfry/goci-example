@@ -39,8 +39,8 @@ pipelines:
         configuration:
           inputSteps:
               - name: start_from_jenkins
-        integrations:
-          - name: stagingGKE
+          integrations:
+            - name: stagingGKE
         execution:
           onExecute:
             - sh 'helm install --set image.tag=${run_number} --name goci-example --namespace staging ./chart/goci-example/'
