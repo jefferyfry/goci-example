@@ -27,25 +27,20 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-            script {
-                docker.build("partnership-public-images.jfrog.io/goci-example:${env.BUILD_NUMBER}")
-            }
+            sh "docker build -t partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER} ."
         }
       }
     }
     stage('Docker Push to Staging Repo') {
       steps {
         container('docker'){
+            docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
+                sh "docker push partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER}"
+            }
            rtServer (
                id: 'PartnershipArtifactory',
                url: 'https://partnership-public-images.jfrog.io',
                credentialsId: 'stagingrepo'
-           )
-           rtDockerPush(
-               serverId: "PartnershipArtifactory",
-               image: "partnership-public-images.jfrog.io/goci-example:${env.BUILD_NUMBER}",
-               targetRepo: 'public-images',
-               properties: 'project-name=goci-example;status=staging'
            )
            rtPublishBuildInfo (
                serverId: 'PartnershipArtifactory'
