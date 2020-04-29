@@ -34,11 +34,20 @@ pipeline {
     stage('Docker Push to Staging Repo') {
       steps {
         container('docker'){
-            script {
-              docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
-                sh "docker push partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER}"
-              }
-           }
+           rtServer (
+               id: 'PartnershipArtifactory',
+               url: 'https://partnership-public-images.jfrog.io',
+               credentialsId: 'stagingrepo'
+           )
+           rtDockerPush(
+               serverId: "PartnershipArtifactory",
+               image: "partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER}",
+               targetRepo: 'docker-local',
+               properties: 'project-name=goci-example;status=staging'
+           )
+           rtPublishBuildInfo (
+               serverId: 'PartnershipArtifactory'
+           )
         }
       }
     }
@@ -46,7 +55,7 @@ pipeline {
   post {
       success {
         script {
-           sh "curl -v -XPOST -H \"authorization: Basic amVmZmY6amZyMGdqM25rMW5z\" \"https://partnership-pipelines-api.jfrog.io/v1/projectIntegrations/17/hook\" -d '{\"buildName\":\"gociexample_build\",\"buildNumber\":\"1\",\"buildInfoResourceName\":\"jenkinsBuildInfo\"}' -H \"Content-Type: application/json\""
+           sh "curl -v -XPOST -H \"authorization: Basic amVmZmY6amZyMGdqM25rMW5z\" \"https://partnership-pipelines-api.jfrog.io/v1/projectIntegrations/17/hook\" -d '{\"buildName\":\"$JOB_NAME\",\"buildNumber\":\"$BUILD_NUMBER\",\"buildInfoResourceName\":\"jenkinsBuildInfo\"}' -H \"Content-Type: application/json\""
         }
       }
   }

@@ -8,7 +8,7 @@ resources:
     type: BuildInfo
     configuration:
       sourceArtifactory: PartnershipArtifactory
-      buildName: gociexample_build
+      buildName: goci-example
       buildNumber: 1
       externalCI: jenkins_openshiftk8s_com
   - name: stagingBuildInfo
