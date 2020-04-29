@@ -27,7 +27,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-          sh "docker build -t partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER} ."
+          sh "docker build -t partnership-public-images.jfrog.io/goci-example:${env.BUILD_NUMBER} ."
         }
       }
     }
@@ -41,7 +41,7 @@ pipeline {
            )
            rtDockerPush(
                serverId: "PartnershipArtifactory",
-               image: "partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER}",
+               image: "partnership-public-images.jfrog.io/goci-example:${env.BUILD_NUMBER}",
                targetRepo: 'public-images',
                properties: 'project-name=goci-example;status=staging'
            )
