@@ -27,7 +27,9 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-          sh "docker build -t partnership-public-images.jfrog.io/goci-example:${env.BUILD_NUMBER} ."
+            script {
+                docker.build("partnership-public-images.jfrog.io/goci-example:${env.BUILD_NUMBER}")
+            }
         }
       }
     }
