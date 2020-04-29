@@ -37,8 +37,7 @@ pipelines:
           inputResources:
             - name: gociexampleGithubRepo
               trigger: false
-            - inputResources:
-              - name: stagingBuildInfo
+            - name: stagingBuildInfo
       - name: wait_for_server
         type: Bash
         configuration:
