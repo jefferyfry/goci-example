@@ -28,11 +28,11 @@ pipeline {
         }
       }
     }
-    stage('Docker Push to Staging Repo') {
+    stage('Docker Push to Repo') {
       steps {
         container('docker'){
             script {
-              docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
+              docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'gociexamplerepo' ) {
                 sh "docker push partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER"
               }
            }
@@ -45,7 +45,7 @@ pipeline {
       }
       steps {
         container('jfrog-cli-go'){
-            withCredentials([usernamePassword(credentialsId: 'stagingrepo', passwordVariable: 'APIKEY', usernameVariable: 'USER')]) {
+            withCredentials([usernamePassword(credentialsId: 'gociexamplerepo', passwordVariable: 'APIKEY', usernameVariable: 'USER')]) {
                 sh "jfrog rt bce $JOB_NAME $BUILD_NUMBER"
                 sh "jfrog rt bag $JOB_NAME $BUILD_NUMBER"
                 sh "jfrog rt bad $JOB_NAME $BUILD_NUMBER go.*"
