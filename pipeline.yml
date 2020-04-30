@@ -44,6 +44,13 @@ pipelines:
               trigger: false
           integrations:
             - name: stagingGKE
+          runtime:
+            type: image
+            image:
+              custom:
+                name: google/cloud-sdk
+                tag: latest
+                options: "-e HOME=/root"
         execution:
           onExecute:
             - helm install --name goci-example --namespace staging ./chart/goci-example/
