@@ -24,7 +24,7 @@ resources:
       buildName: goci-example/master
       buildNumber: 1
 pipelines:
-  - name: goci_example_jfrog
+  - name: goci_example
     steps:
       - name: start_from_jenkins
         type: Bash
@@ -43,11 +43,11 @@ pipelines:
             - name: gociexampleGithubRepo
               trigger: false
           integrations:
-            - name: gcpCreds
+            - name: gcpK8sPTRENGCreds
         execution:
           onExecute:
             - gcloud container clusters get-credentials staging --zone us-central1-c
-            - kubectl run goci-example --image=partnership-public-images.jfrog.io/goci-example:latest --port 8080 --namespace staging
+            - kubectl run goci-example --generator=run-pod/v1  --image=partnership-public-images.jfrog.io/goci-example:latest --port 8080 --namespace staging
             - kubectl expose deployment goci-example --type=LoadBalancer --port 80 --target-port 8080 --namespace staging
       - name: wait_for_server
         type: Bash
