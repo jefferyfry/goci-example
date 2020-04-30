@@ -54,13 +54,6 @@ pipelines:
         configuration:
           inputSteps:
             - name: deploy_staging
-          runtime:
-            type: image
-            image:
-              auto:
-                language: go
-                versions:
-                  - "1.14.2"
         execution:
           onExecute:
             - timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false
