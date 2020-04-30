@@ -1,8 +1,0 @@
-HTTP/1.1 404 Not Found
-Server: openresty/1.15.8.2
-Date: Thu, 23 Apr 2020 02:43:42 GMT
-Content-Type: text/plain; charset=utf-8
-Content-Length: 19
-Connection: keep-alive
-X-Content-Type-Options: nosniff
-
