@@ -47,8 +47,7 @@ pipelines:
         execution:
           onExecute:
             - gcloud container clusters get-credentials jefff-goci-example --zone us-central1-c --project jfrog-parnership-team
-            - kubectl run goci-example --generator=run-pod/v1  --image=partnership-public-images.jfrog.io/goci-example:latest --port 8080
-            - kubectl expose deployment goci-example --type=LoadBalancer --port 80 --target-port 8080
+            - helm install --name goci-example ./chart/goci-example/
       - name: wait_for_server
         type: Bash
         configuration:
