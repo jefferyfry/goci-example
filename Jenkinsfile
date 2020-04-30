@@ -46,8 +46,8 @@ pipeline {
            )
            rtPublishBuildInfo (
                serverId: 'PartnershipArtifactory',
-               buildName: "${env.buildName}",
-               buildNumber: "${env.buildNumber}"
+               buildName: "$JOB_NAME",
+               buildNumber: "$BUILD_NUMBER"
            )
         }
       }
