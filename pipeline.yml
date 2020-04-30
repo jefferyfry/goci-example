@@ -44,6 +44,7 @@ pipelines:
               trigger: false
           integrations:
             - name: gcpK8sPTRENGCreds
+            - name: gociexample
           releaseName: goci-example
           chartPath: chart/goci-example/
         execution:
