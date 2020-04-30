@@ -47,6 +47,7 @@ pipelines:
             - name: gociexample
           releaseName: goci-example
           chartPath: chart/goci-example/
+          flags: --debug
       - name: wait_for_server
         type: Bash
         configuration:
