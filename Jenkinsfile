@@ -6,9 +6,6 @@ pipeline {
         idleMinutes 120
     }
   }
-  environment {
-     STAGING_URL = 'http://goci-example.35.193.183.84.xip.io'
-  }
   stages {
     stage('Build') {
         steps {
@@ -27,7 +24,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-            sh "docker build -t partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER} ."
+            sh "docker build -t partnership-public-images.jfrog.io/staging/goci-example:$BUILD_NUMBER ."
         }
       }
     }
@@ -36,13 +33,19 @@ pipeline {
         container('docker'){
            script {
                 docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
-                    sh "docker push partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER}"
+                    sh "docker push partnership-public-images.jfrog.io/staging/goci-example:$BUILD_NUMBER"
                 }
            }
            rtServer (
                id: 'PartnershipArtifactory',
                url: 'https://partnership.jfrog.io/artifactory',
                credentialsId: 'stagingrepo'
+           )
+           rtDockerPush(
+               serverId: 'PartnershipArtifactory',
+               image: "partnership-public-images.jfrog.io/staging/goci-example:$BUILD_NUMBER",
+               targetRepo: 'docker-local',
+               properties: 'project-name=goci-example;status=staging'
            )
            rtPublishBuildInfo (
                serverId: 'PartnershipArtifactory',
