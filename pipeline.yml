@@ -77,8 +77,11 @@ pipelines:
                   - "1.13"
         execution:
           onExecute:
+            - cd ../dependencyState/resources/gociexampleGithubRepo
             - pwd
-            - go test "../dependencyState/resources/gociexampleGithubRepo/test" -run Staging
+            - ls
+            - go mod download
+            - go test ./test -run Staging
       - name: publish_staging_build
         type: PublishBuildInfo
         configuration:
