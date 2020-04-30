@@ -77,7 +77,7 @@ pipelines:
                   - "1.13"
         execution:
           onExecute:
-            - go test "./.../test" -run Staging
+            - go test "../dependencyState/resources/gociexampleGithubRepo/test" -run Staging
       - name: publish_staging_build
         type: PublishBuildInfo
         configuration:
