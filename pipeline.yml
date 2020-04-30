@@ -43,19 +43,10 @@ pipelines:
             - name: gociexampleGithubRepo
               trigger: false
           integrations:
-            - name: stagingGKE
-          runtime:
-            type: image
-            image:
-              custom:
-                name: google/cloud-sdk
-                tag: latest
-                options: "-e HOME=/root"
-        execution:
-          onExecute:
-            - gcloud container clusters get-credentials staging --zone us-central1-c
-            - kubectl run goci-example --image=partnership-public-images.jfrog.io/goci-example:$run_number --port 8080 --namespace staging
-            - kubectl expose deployment goci-example --type=LoadBalancer --port 80 --target-port 8080 --namespace staging
+            - name: gcpCreds
+          execution:
+            onExecute:
+              - helm install --name goci-example --namespace staging ./chart/goci-example/
       - name: wait_for_server
         type: Bash
         configuration:
