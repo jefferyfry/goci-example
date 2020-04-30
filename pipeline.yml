@@ -49,6 +49,7 @@ pipelines:
             image:
               custom:
                 name: ioteam/gcloud-kubectl-helm
+                tag: latest
         execution:
           onExecute:
             - helm install --name goci-example --namespace staging ./chart/goci-example/
