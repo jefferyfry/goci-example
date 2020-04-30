@@ -77,9 +77,7 @@ pipelines:
                   - "1.13"
         execution:
           onExecute:
-            - pwd
-            - ls
-            - go test ./test -run Staging
+            - go test "./.../test" -run Staging
       - name: publish_staging_build
         type: PublishBuildInfo
         configuration:
