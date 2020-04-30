@@ -65,6 +65,9 @@ pipelines:
         configuration:
           inputSteps:
             - name: wait_for_server
+          inputResources:
+            - name: gociexampleGithubRepo
+              trigger: false
           runtime:
             type: image
             image:
