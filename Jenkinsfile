@@ -36,16 +36,18 @@ pipeline {
         container('docker'){
            script {
                 docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
-                    sh "docker push partnership-public-images.jfrog.io/jenkins/staging/goci-example:${env.BUILD_NUMBER}"
+                    sh "docker push partnership-public-images.jfrog.io/staging/goci-example:${env.BUILD_NUMBER}"
                 }
            }
            rtServer (
                id: 'PartnershipArtifactory',
-               url: 'https://partnership-public-images.jfrog.io',
+               url: 'https://partnership.jfrog.io',
                credentialsId: 'stagingrepo'
            )
            rtPublishBuildInfo (
                serverId: 'PartnershipArtifactory'
+               buildName: "${env.buildName}"
+               buildNumber: "${env.buildNumber}"
            )
         }
       }
