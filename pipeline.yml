@@ -51,6 +51,7 @@ pipelines:
         execution:
           onStart:
             - gcloud container clusters get-credentials jefff-goci-example --zone us-central1-c --project jfrog-parnership-team
+            - helm delete goci-example --purge || true
       - name: wait_for_server
         type: Bash
         configuration:
@@ -58,7 +59,7 @@ pipelines:
             - name: deploy_staging
         execution:
           onExecute:
-            - timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.238.177.209.xip.io)" != "200" ]]; do sleep 5; done' || false
+            - timeout 60 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.238.177.209.xip.io)" != "200" ]]; do sleep 5; done' || true
       - name: staging_test
         type: Bash
         configuration:
