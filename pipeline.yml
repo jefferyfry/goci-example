@@ -44,9 +44,9 @@ pipelines:
               trigger: false
           integrations:
             - name: gcpCreds
-          execution:
-            onExecute:
-              - helm install --name goci-example --namespace staging ./chart/goci-example/
+        execution:
+          onExecute:
+            - helm install --name goci-example --namespace staging ./chart/goci-example/
       - name: wait_for_server
         type: Bash
         configuration:
