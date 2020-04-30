@@ -35,7 +35,7 @@ pipelines:
           onExecute:
             - echo 'Jenkins job triggered Pipelines'
       - name: deploy_staging
-        type: Bash
+        type: HelmDeploy
         configuration:
           inputSteps:
             - name: start_from_jenkins
@@ -44,12 +44,11 @@ pipelines:
               trigger: false
           integrations:
             - name: gcpK8sPTRENGCreds
+          releaseName: goci-example
+          chartPath: chart/goci-example/
         execution:
-          onExecute:
+          onStart:
             - gcloud container clusters get-credentials jefff-goci-example --zone us-central1-c --project jfrog-parnership-team
-            - ls
-            - pwd
-            - helm install --name goci-example chart/goci-example/
       - name: wait_for_server
         type: Bash
         configuration:
