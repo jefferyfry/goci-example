@@ -75,11 +75,11 @@ pipelines:
                 language: go
                 versions:
                   - "1.13"
+          environmentVariables:
+            STAGING_URL: "http://goci-example.35.238.177.209.xip.io"
         execution:
           onExecute:
             - cd ../dependencyState/resources/gociexampleGithubRepo
-            - pwd
-            - ls
             - go mod download
             - go test ./test -run Staging
       - name: publish_staging_build
