@@ -8,30 +8,24 @@ resources:
     type: BuildInfo
     configuration:
       sourceArtifactory: PartnershipArtifactory
-      buildName: goci-example
+      buildName: goci-example/master
       buildNumber: 1
       externalCI: jenkins_openshiftk8s_com
   - name: stagingBuildInfo
     type: BuildInfo
     configuration:
       sourceArtifactory: PartnershipArtifactory
-      buildName: gociexample_build
+      buildName: goci-example/master
       buildNumber: 1
   - name: releaseBuildInfo
     type: BuildInfo
     configuration:
       sourceArtifactory: PartnershipArtifactory
-      buildName: gociexample_build
+      buildName: goci-example/master
       buildNumber: 1
 pipelines:
   - name: goci_example_jfrog
     steps:
-#      - name: xray_scan_staging_build
-#        type: XrayScan
-#        configuration:
-#          inputResources:
-#            - name: stagingBuildInfo
-#              trigger: true
       - name: start_from_jenkins
         type: Bash
         configuration:
