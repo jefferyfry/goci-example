@@ -32,7 +32,7 @@ pipeline {
       steps {
         container('jfrog-cli-go'){
             withCredentials([usernamePassword(credentialsId: 'stagingrepo', passwordVariable: 'APIKEY', usernameVariable: 'USER')]) {
-                sh "jfrog rt dp partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER public-images --user=$USER --apiKey=$APIKEY --build-name=$JOB_NAME --build-number=$BUILD_NUMBER"
+                sh "jfrog rt dp partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER public-images --user=$USER --apikey=$APIKEY --build-name=$JOB_NAME --build-number=$BUILD_NUMBER"
             }
         }
       }
