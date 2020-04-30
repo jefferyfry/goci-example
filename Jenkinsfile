@@ -39,7 +39,7 @@ pipeline {
            rtDockerPush(
                serverId: 'PartnershipArtifactory',
                image: "partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER",
-               host: 'unix:///var/run/docker.sock',
+               host: 'tcp://0.0.0.0:2375',
                targetRepo: 'public-images',
                properties: 'project-name=goci-example;status=staging'
            )
