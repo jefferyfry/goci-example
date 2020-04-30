@@ -29,6 +29,9 @@ pipeline {
       }
     }
     stage('Docker Push to Staging Repo') {
+      environment {
+        JFROG_CLI_OFFER_CONFIG = false
+      }
       steps {
         container('jfrog-cli-go'){
             withCredentials([usernamePassword(credentialsId: 'stagingrepo', passwordVariable: 'APIKEY', usernameVariable: 'USER')]) {
