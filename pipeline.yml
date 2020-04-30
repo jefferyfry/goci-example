@@ -80,7 +80,7 @@ pipelines:
         type: PromoteBuild
         configuration:
           inputSteps:
-            - name: publish_staging_build
+            - name: staging_test
           targetRepository: partnership-public-images.jfrog.io
           status: Released
           comment: Passed staging tests.
