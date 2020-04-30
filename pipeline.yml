@@ -11,12 +11,6 @@ resources:
       buildName: goci-example/master
       buildNumber: 1
       externalCI: jenkins_openshiftk8s_com
-  - name: stagingBuildInfo
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: PartnershipArtifactory
-      buildName: goci-example/master
-      buildNumber: 1
   - name: releaseBuildInfo
     type: BuildInfo
     configuration:
@@ -88,7 +82,7 @@ pipelines:
           inputSteps:
             - name: staging_test
           outputResources:
-            - name: stagingBuildInfo
+            - name: jenkinsBuildInfo
       - name: promote_release
         type: PromoteBuild
         configuration:
@@ -98,7 +92,7 @@ pipelines:
           status: Released
           comment: Passed staging tests.
           inputResources:
-            - name: stagingBuildInfo
+            - name: jenkinsBuildInfo
               trigger: false
           outputResources:
             - name: releaseBuildInfo
