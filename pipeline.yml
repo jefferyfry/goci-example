@@ -81,7 +81,7 @@ pipelines:
         configuration:
           inputSteps:
             - name: staging_test
-          targetRepository: partnership-public-images.jfrog.io
+          targetRepository: public-images
           status: Released
           comment: Passed staging tests.
           inputResources:
