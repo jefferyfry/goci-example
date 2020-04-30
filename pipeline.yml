@@ -47,9 +47,6 @@ pipelines:
             - name: gociexample
           releaseName: goci-example
           chartPath: chart/goci-example/
-        execution:
-          onStart:
-            - gcloud container clusters get-credentials jefff-goci-example --zone us-central1-c --project jfrog-parnership-team
       - name: wait_for_server
         type: Bash
         configuration:
