@@ -9,11 +9,6 @@ spec:
       command:
         - cat
       tty: true
-    - name: gcloud-kubectl-helm
-      image: ioteam/gcloud-kubectl-helm
-      command:
-        - cat
-      tty: true
     - name: jfrog-cli-go
       image: docker.bintray.io/jfrog/jfrog-cli-go:latest
       imagePullPolicy: Always

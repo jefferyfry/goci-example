@@ -24,7 +24,7 @@ pipeline {
     stage('Docker Build') {
       steps {
         container('docker'){
-            sh "docker build -t partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER ."
+            sh "docker build -t partnership-public-images.jfrog.io/goci-example:latest ."
         }
       }
     }
@@ -33,7 +33,7 @@ pipeline {
         container('docker'){
             script {
               docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'gociexamplerepo' ) {
-                sh "docker push partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER"
+                sh "docker push partnership-public-images.jfrog.io/goci-example:latest"
               }
            }
         }

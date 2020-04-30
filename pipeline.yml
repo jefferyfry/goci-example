@@ -44,9 +44,14 @@ pipelines:
               trigger: false
           integrations:
             - name: stagingGKE
+          runtime:
+            type: image
+            image:
+              custom:
+                name: ioteam/gcloud-kubectl-helm
         execution:
           onExecute:
-            - helm install --set image.tag=$run_number --name goci-example --namespace staging ./chart/goci-example/
+            - helm install --name goci-example --namespace staging ./chart/goci-example/
       - name: wait_for_server
         type: Bash
         configuration:
