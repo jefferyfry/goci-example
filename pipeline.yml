@@ -71,7 +71,7 @@ pipelines:
               auto:
                 language: go
                 versions:
-                  - "1.14.2"
+                  - "1.13"
         execution:
           onExecute:
             - go test ./... -run Staging
