@@ -46,7 +46,7 @@ pipelines:
             - name: gcpK8sPTRENGCreds
         execution:
           onExecute:
-            - gcloud container clusters get-credentials staging --zone us-central1-c
+            - gcloud container clusters get-credentials jefff-goci-example --zone us-central1-c --project jfrog-parnership-team
             - kubectl run goci-example --generator=run-pod/v1  --image=partnership-public-images.jfrog.io/goci-example:latest --port 8080 --namespace staging
             - kubectl expose deployment goci-example --type=LoadBalancer --port 80 --target-port 8080 --namespace staging
       - name: wait_for_server
