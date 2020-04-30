@@ -76,13 +76,6 @@ pipelines:
             - cd ../dependencyState/resources/gociexampleGithubRepo
             - go mod download
             - go test ./test -run Staging
-      - name: publish_staging_build
-        type: PublishBuildInfo
-        configuration:
-          inputSteps:
-            - name: staging_test
-          outputResources:
-            - name: jenkinsBuildInfo
       - name: promote_release
         type: PromoteBuild
         configuration:
