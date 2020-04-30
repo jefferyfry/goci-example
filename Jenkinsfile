@@ -31,11 +31,6 @@ pipeline {
     stage('Docker Push to Staging Repo') {
       steps {
         container('docker'){
-           script {
-                docker.withRegistry( 'https://partnership-public-images.jfrog.io', 'stagingrepo' ) {
-                    sh "docker push partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER"
-                }
-           }
            rtServer (
                id: 'PartnershipArtifactory',
                url: 'https://partnership.jfrog.io/artifactory',
@@ -44,7 +39,7 @@ pipeline {
            rtDockerPush(
                serverId: 'PartnershipArtifactory',
                image: "partnership-public-images.jfrog.io/goci-example:$BUILD_NUMBER",
-               host: 'docker-sock'
+               host: 'docker-sock',
                targetRepo: 'public-images',
                properties: 'project-name=goci-example;status=staging'
            )
