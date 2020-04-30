@@ -38,7 +38,10 @@ pipelines:
         type: Bash
         configuration:
           inputSteps:
-              - name: start_from_jenkins
+            - name: start_from_jenkins
+          inputResources:
+            - name: gociexampleGithubRepo
+              trigger: false
           integrations:
             - name: stagingGKE
         execution:
