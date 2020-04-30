@@ -45,8 +45,8 @@ pipeline {
                credentialsId: 'stagingrepo'
            )
            rtPublishBuildInfo (
-               serverId: 'PartnershipArtifactory'
-               buildName: "${env.buildName}"
+               serverId: 'PartnershipArtifactory',
+               buildName: "${env.buildName}",
                buildNumber: "${env.buildNumber}"
            )
         }
