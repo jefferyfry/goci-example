@@ -41,7 +41,7 @@ pipeline {
            }
            rtServer (
                id: 'PartnershipArtifactory',
-               url: 'https://partnership.jfrog.io',
+               url: 'https://partnership.jfrog.io/artifactory',
                credentialsId: 'stagingrepo'
            )
            rtPublishBuildInfo (
