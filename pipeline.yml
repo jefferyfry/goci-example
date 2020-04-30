@@ -42,10 +42,8 @@ pipelines:
           integrations:
             - name: stagingGKE
         execution:
-          onStart:
-            - echo 'helm install --set image.tag=$run_number --name goci-example --namespace staging ./chart/goci-example/'
           onExecute:
-            - sh 'helm install --set image.tag=$run_number --name goci-example --namespace staging ./chart/goci-example/'
+            - helm install --set image.tag=$run_number --name goci-example --namespace staging ./chart/goci-example/
       - name: wait_for_server
         type: Bash
         configuration:
@@ -60,7 +58,7 @@ pipelines:
                   - "1.14.2"
         execution:
           onExecute:
-            - sh 'timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false'
+            - timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false
       - name: staging_test
         type: Bash
         configuration:
@@ -75,7 +73,7 @@ pipelines:
                   - "1.14.2"
         execution:
           onExecute:
-            - sh 'go test ./... -run Staging'
+            - go test ./... -run Staging
       - name: publish_staging_build
         type: PublishBuildInfo
         configuration:
