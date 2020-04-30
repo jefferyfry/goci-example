@@ -47,8 +47,8 @@ pipelines:
         execution:
           onExecute:
             - gcloud container clusters get-credentials jefff-goci-example --zone us-central1-c --project jfrog-parnership-team
-            - kubectl run goci-example --generator=run-pod/v1  --image=partnership-public-images.jfrog.io/goci-example:latest --port 8080 --namespace staging
-            - kubectl expose deployment goci-example --type=LoadBalancer --port 80 --target-port 8080 --namespace staging
+            - kubectl run goci-example --generator=run-pod/v1  --image=partnership-public-images.jfrog.io/goci-example:latest --port 8080
+            - kubectl expose deployment goci-example --type=LoadBalancer --port 80 --target-port 8080
       - name: wait_for_server
         type: Bash
         configuration:
@@ -56,7 +56,7 @@ pipelines:
             - name: deploy_staging
         execution:
           onExecute:
-            - timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.193.183.84.xip.io)" != "200" ]]; do sleep 5; done' || false
+            - timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://goci-example.35.238.177.209.xip.io)" != "200" ]]; do sleep 5; done' || false
       - name: staging_test
         type: Bash
         configuration:
