@@ -15,11 +15,11 @@ spec:
         - cat
       tty: true
     - name: jfrog-cli-go
-        image: docker.bintray.io/jfrog/jfrog-cli-go:latest
-        imagePullPolicy: Always
-        command:
-          - cat
-        tty: true
+      image: docker.bintray.io/jfrog/jfrog-cli-go:latest
+      imagePullPolicy: Always
+      command:
+        - cat
+      tty: true
     - name: docker
       image: docker:1.11
       imagePullPolicy: Always
